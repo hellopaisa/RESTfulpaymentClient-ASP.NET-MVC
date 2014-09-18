@@ -125,7 +125,7 @@ namespace RESTfulApiClient_ASP.NET_MVC.Controllers
                 //get token info
                 using (var _httpClient = new HttpClient())
                 {
-                    _httpClient.BaseAddress = new Uri("https://localhost:44302/");
+                    _httpClient.BaseAddress = new Uri("https://test.hellopaisa.com.np/");
                     _httpClient.DefaultRequestHeaders.Accept.Clear();
                     _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 

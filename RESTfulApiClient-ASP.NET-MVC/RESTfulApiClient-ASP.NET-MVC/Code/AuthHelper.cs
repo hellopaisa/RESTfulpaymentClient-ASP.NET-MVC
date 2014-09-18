@@ -10,9 +10,13 @@ namespace RESTfulApiClient_ASP.NET_MVC.Code
     {
         public static WebServerClient CreateClient()
         {
+            //pleasea contact hellopaisa for the credentials
+
             var desc = GetAuthServerDescription();
-            var client = new WebServerClient(desc, clientIdentifier: "ID");
-            client.ClientCredentialApplicator = ClientCredentialApplicator.PostParameter("SECRET");
+            //client ID provided
+            var client = new WebServerClient(desc, clientIdentifier: "ID-provided");
+            //client secret/password provided
+            client.ClientCredentialApplicator = ClientCredentialApplicator.PostParameter("SECRET-provided");
 
             return client;
         }
@@ -21,8 +25,12 @@ namespace RESTfulApiClient_ASP.NET_MVC.Code
         {
             //throw new NotImplementedException();
             var authServerDesc = new AuthorizationServerDescription();
-            authServerDesc.AuthorizationEndpoint = new Uri(@"https://localhost:44302/OAuth/Auth");
-            authServerDesc.TokenEndpoint = new Uri(@"https://localhost:44302/OAuth/Token");
+
+            //authorization endpoint of Hello Paisa
+            authServerDesc.AuthorizationEndpoint = new Uri(@"https://test.hellopaisa.com.np/OAuth/Auth");
+
+            //token endpoint
+            authServerDesc.TokenEndpoint = new Uri(@"https://test.hellopaisa.com.np/OAuth/Token");
             authServerDesc.ProtocolVersion = ProtocolVersion.V20;
             return authServerDesc;
 
