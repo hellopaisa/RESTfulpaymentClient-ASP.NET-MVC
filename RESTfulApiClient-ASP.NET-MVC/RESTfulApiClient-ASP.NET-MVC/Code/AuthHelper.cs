@@ -11,8 +11,8 @@ namespace RESTfulApiClient_ASP.NET_MVC.Code
         public static WebServerClient CreateClient()
         {
             var desc = GetAuthServerDescription();
-            var client = new WebServerClient(desc, clientIdentifier: "PUJAN_ID");
-            client.ClientCredentialApplicator = ClientCredentialApplicator.PostParameter("PUJAN_SECRET");
+            var client = new WebServerClient(desc, clientIdentifier: "ID");
+            client.ClientCredentialApplicator = ClientCredentialApplicator.PostParameter("SECRET");
 
             return client;
         }

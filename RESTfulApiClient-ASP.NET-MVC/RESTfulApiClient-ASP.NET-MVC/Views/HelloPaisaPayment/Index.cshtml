@@ -1,5 +1,32 @@
-﻿@{
+﻿@model RESTfulApiClient_ASP.NET_MVC.Models.TokenInfo
+
+@{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Enter Transaction OTP</h2>
+
+@using (Html.BeginForm("HPTransaction", "HelloPaisaPayment"))
+{
+    @Html.AntiForgeryToken()
+    <div class="text-danger"> @Html.ValidationSummary()</div>
+
+    <fieldset>
+        <legend></legend>
+        <div class="form-horizontal">
+            @Html.HiddenFor(m => m.AccessToken)
+            <div class="form-group">
+                <div class="col-sm-2">
+                   <p>Enter the transaction OTP received in SMS:</p>
+                </div>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(m => m.TransactionOTP)
+                </div>
+                <div class="col-sm-2">
+                    <input type="submit" value="Submit" />
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
+
