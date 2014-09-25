@@ -26,11 +26,12 @@ namespace RESTfulApiClient_ASP.NET_MVC.Code
             //throw new NotImplementedException();
             var authServerDesc = new AuthorizationServerDescription();
 
-            //authorization endpoint of Hello Paisa
+            //authorization endpoint of Hello Paisa for the test platform.
             authServerDesc.AuthorizationEndpoint = new Uri(@"https://test.hellopaisa.com.np/OAuth/Auth");
 
-            //token endpoint
+            //token endpoint for the test environment.
             authServerDesc.TokenEndpoint = new Uri(@"https://test.hellopaisa.com.np/OAuth/Token");
+            //protocol version of OAuth
             authServerDesc.ProtocolVersion = ProtocolVersion.V20;
             return authServerDesc;
 

@@ -25,23 +25,28 @@ namespace RESTfulApiClient_ASP.NET_MVC.Controllers
 
         public ActionResult Index()
         {
+            //We have use DotNetOpenAuth as a OAuth Client library.
+
+            //Since we have used the same url to initiate the request and receive the response as a callback URL,
+            //Check the QueryString whether it's a response or not.
+
             if (string.IsNullOrEmpty(Request.QueryString["code"]))
             {
-                //Initial request
+                //Initiate a request to the Hello-Paisa Authorization Server
                 return InitAuth();
             }
             else
             {
-                //response of the authorization
+                //Response received from the authorization server.
                 return OAuthCallback();
             }
         }
 
-        //creating the instance of the client
+        //creating an instance of the client
         static WebServerClient client = AuthHelper.CreateClient();
 
         /// <summary>
-        /// Initialize the request for authorization
+        /// Initializes the request for authorization
         /// </summary>
         /// <returns></returns>
         private ActionResult InitAuth()
@@ -52,7 +57,7 @@ namespace RESTfulApiClient_ASP.NET_MVC.Controllers
             uri = RemoveQueryStringFromUri(uri);
             state.Callback = new Uri(uri);
 
-            //Transaction Amount
+            //In the scope, please add only a single element, which is the Transaction amount, else the request will be rejected.
             state.Scope.Add("15");
 
             var r = client.PrepareRequestUserAuthorization(state);
@@ -72,11 +77,12 @@ namespace RESTfulApiClient_ASP.NET_MVC.Controllers
         }
 
         /// <summary>
-        /// Response from the authorization
+        /// Response from the Hello Paisa Authorization Server
         /// </summary>
         /// <returns></returns>
         private ActionResult OAuthCallback()
         {
+            //create instance of TokenInfo Object
             var _tokenInfoObj = new TokenInfo();
 
             try
@@ -84,19 +90,18 @@ namespace RESTfulApiClient_ASP.NET_MVC.Controllers
                 //bypassing the HTTPS security, as the certificate in our test server is self signed.
                 Helper.SetCertificatePolicy();
 
-                //the response from the authorization
+                //process the response
                 var auth = client.ProcessUserAuthorization(this.Request);
 
                 if (auth != null)
                 {
                     Authorization = auth;
 
-
+                    //assigning the received access-token to the AccessToken Property of tokenInfo object.
                     _tokenInfoObj.AccessToken = auth.AccessToken;
 
-                }
-
-                ViewBag.Message += auth.AccessToken;
+                }                
+                
             }
             catch (Exception ex)
             {
@@ -150,6 +155,7 @@ namespace RESTfulApiClient_ASP.NET_MVC.Controllers
                             //enter the transaction OTP, entered by the user                           
 
                             _tokenInfo.TransactionOTP = tokenInfo.TransactionOTP;
+
                             //call the complete payment function
                             var _paymentResponse = _httpClient.PostAsJsonAsync("api/CompletePayment", _tokenInfo);
 
@@ -157,9 +163,20 @@ namespace RESTfulApiClient_ASP.NET_MVC.Controllers
 
                             if (_transactionResponse != null)
                             {
-                                ViewBag.Message = _transactionResponse.ResponseMessage + "   ::::::   ";
+                                //check the status of the transaction, if it's validity is true and the responseCode is 0, the the transaction is successful.
+                                if (_transactionResponse.Validity == true && _transactionResponse.ResponseCode == 0)
+                                {
+                                    //success
+                                    var msg = "Dear, " + _transactionResponse.CustomerFirstName + ", Your transaction with id: " + _transactionResponse.TransactionTraceID + " is successful.";
+                                    ViewBag.Message = msg;
+                                }
+                                else
+                                {
+                                    //transaction failed
+                                    var errorMsg = "Transaction Failed. " + _transactionResponse.ResponseMessage +" , error Code=" + _transactionResponse.ResponseCode;
+                                    ViewBag.Message = errorMsg;
+                                }
                             }
-
                         }
                     }
                 }

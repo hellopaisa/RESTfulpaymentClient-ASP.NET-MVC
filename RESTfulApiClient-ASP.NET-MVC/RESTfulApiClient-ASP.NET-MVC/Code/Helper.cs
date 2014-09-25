@@ -8,6 +8,9 @@ namespace RESTfulApiClient_ASP.NET_MVC.Code
 {
     public static class Helper
     {
+        /// <summary>
+        /// This is used to bypass the SSL errors. 
+        /// </summary>
         public static void SetCertificatePolicy()
         {
             ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidate;
