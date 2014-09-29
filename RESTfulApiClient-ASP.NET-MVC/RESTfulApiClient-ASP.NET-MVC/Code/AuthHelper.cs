@@ -14,9 +14,9 @@ namespace RESTfulApiClient_ASP.NET_MVC.Code
 
             var desc = GetAuthServerDescription();
             //client ID provided
-            var client = new WebServerClient(desc, clientIdentifier: "ID-provided");
+            var client = new WebServerClient(desc, clientIdentifier: "ID");
             //client secret/password provided
-            client.ClientCredentialApplicator = ClientCredentialApplicator.PostParameter("SECRET-provided");
+            client.ClientCredentialApplicator = ClientCredentialApplicator.PostParameter("SECRET");
 
             return client;
         }

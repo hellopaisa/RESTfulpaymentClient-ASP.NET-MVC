@@ -130,13 +130,14 @@ namespace RESTfulApiClient_ASP.NET_MVC.Controllers
                 //get token info
                 using (var _httpClient = new HttpClient())
                 {
-                    _httpClient.BaseAddress = new Uri("https://test.hellopaisa.com.np/");
+                    _httpClient.BaseAddress = new Uri(@"https://test.hellopaisa.com.np/");
                     _httpClient.DefaultRequestHeaders.Accept.Clear();
                     _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     //make the request for the token info
                     HttpResponseMessage _responseForTokenInfo = _httpClient.GetAsync("api/TokenInfo?token=" + tokenInfo.AccessToken).Result;
 
+                    
                     //if the status code is success, then
                     if (_responseForTokenInfo.IsSuccessStatusCode)
                     {
@@ -159,6 +160,7 @@ namespace RESTfulApiClient_ASP.NET_MVC.Controllers
                             //call the complete payment function
                             var _paymentResponse = _httpClient.PostAsJsonAsync("api/CompletePayment", _tokenInfo);
 
+                            
                             var _transactionResponse = _paymentResponse.Result.Content.ReadAsAsync<Transaction>().Result;
 
                             if (_transactionResponse != null)
@@ -167,17 +169,26 @@ namespace RESTfulApiClient_ASP.NET_MVC.Controllers
                                 if (_transactionResponse.Validity == true && _transactionResponse.ResponseCode == 0)
                                 {
                                     //success
-                                    var msg = "Dear, " + _transactionResponse.CustomerFirstName + ", Your transaction with id: " + _transactionResponse.TransactionTraceID + " is successful.";
+                                    var msg = " Your transaction is " + _transactionResponse.ResponseMessage + ", Transaction Trace ID=" + _transactionResponse.TransactionTraceID;
                                     ViewBag.Message = msg;
                                 }
                                 else
                                 {
                                     //transaction failed
-                                    var errorMsg = "Transaction Failed. " + _transactionResponse.ResponseMessage +" , error Code=" + _transactionResponse.ResponseCode;
+                                    var errorMsg = "Transaction Failed. " + _transactionResponse.ResponseMessage + " , error Code=" + _transactionResponse.ResponseCode;
                                     ViewBag.Message = errorMsg;
                                 }
                             }
                         }
+                        else
+                        {
+                            ViewBag.Message = "Invalid TokenInfo Status";
+                        }
+
+                    }
+                    else
+                    {
+                        ViewBag.Message = "TokenInfo not found." + _responseForTokenInfo.StatusCode;
                     }
                 }
             }

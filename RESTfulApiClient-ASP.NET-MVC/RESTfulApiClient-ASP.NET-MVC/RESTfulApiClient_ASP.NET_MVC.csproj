@@ -196,9 +196,12 @@
     <Compile Include="Code\Helper.cs" />
     <Compile Include="Controllers\HelloPaisaPaymentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HPPaymentIVRController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\HPPayment.cs" />
+    <Compile Include="Models\HPPaymentResponse.cs" />
     <Compile Include="Models\TokenInfo.cs" />
     <Compile Include="Models\TokenStatus.cs" />
     <Compile Include="Models\Transaction.cs" />
@@ -291,6 +294,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\HelloPaisaPayment\Index.cshtml" />
     <Content Include="Views\HelloPaisaPayment\HPTransaction.cshtml" />
+    <Content Include="Views\HPPaymentIVR\Index.cshtml" />
+    <Content Include="Views\HPPaymentIVR\Confirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
